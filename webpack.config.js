@@ -11,6 +11,9 @@ module.exports = {
   plugins: [
     new webpack.NoErrorsPlugin(),
   ],
+  devServer: {
+      port: '8088'
+  },
   resolve: {
     root: [
       path.resolve(baseDir, 'src/app'),
@@ -34,6 +37,10 @@ module.exports = {
       {
         test   : /\.css$/,
         loader : 'style-loader!css-loader!postcss-loader'
+      },
+      {
+        test   : /\.(png|jpg|svg)$/,
+        loader : 'url-loader?limit=200000'
       },
       {
         test    : /\.jsx?$/,

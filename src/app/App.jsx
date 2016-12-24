@@ -19,7 +19,6 @@ import {Gmaps, Marker, InfoWindow, Circle} from 'react-gmaps';
 export default class App extends Component {
   constructor(props) {
     super(props);
-
   }
 
   state = {
@@ -33,10 +32,20 @@ export default class App extends Component {
     };
 
     const about = (
-      <p className="text-center spacer-top-80 padding-bottom-40 padding-both-160">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi cumque deserunt distinctio est illum iusto l
-        aboriosam nihil odit pariatur quisquam quod rerum, sed similique sunt tempore. Adipisci fugit possimus rem.
+      <p className="f1 text-center spacer-top-80 padding-bottom-40 padding-both-160">
+        На карте отображены заявки на доставку товаров с указанием пунктов назначения, ценой и весом груза.
+        Для получения дополнительной информации щелкните на значек автомобиля.
       </p>
+    );
+
+    const newOrderForm = (
+      <Form>
+        <FormGroup>
+          <h3>
+            Список заказов
+          </h3>
+        </FormGroup>
+      </Form>
     );
 
     const interactiveMap = (
@@ -53,7 +62,9 @@ export default class App extends Component {
           lat={coords.lat}
           lng={coords.lng}
           draggable={true}
-          onDragEnd={this.onDragEnd} />
+          onDragEnd={this.onDragEnd}
+          icon = 'src/app/business.svg'
+        />
         <InfoWindow
           lat={coords.lat}
           lng={coords.lng}
@@ -63,15 +74,16 @@ export default class App extends Component {
     );
     return (
       <article>
-        <header className="dark-theme service-header padding-top-20 padding-bottom-20">
+        <header className="padding-top-20 padding-bottom-20">
           <Grid>
             <h1 className="heading__type-h1">
               Delivery Service
             </h1>
           </Grid>
         </header>
-        <main>
+        <main className="dark-theme service-header">
           <Grid>
+            { newOrderForm }
             { about }
             { interactiveMap }
           </Grid>

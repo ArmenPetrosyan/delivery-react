@@ -8,7 +8,8 @@
   "dependencies": {
     "normalize.css": "^4.2.0",
     "react-bootstrap": "^0.30.7",
-    "react-gmaps": "^1.5.0"
+    "react-gmaps": "^1.5.0",
+    "url-loader": "^0.5.7"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.0",
@@ -23,6 +24,7 @@
     "eslint": "^3.7.0",
     "eslint-loader": "^1.5.0",
     "eslint-plugin-react": "^6.3.0",
+    "file-loader": "^0.9.0",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "postcss-loader": "^0.13.0",
@@ -30,6 +32,7 @@
     "react-dom": "^15.3.2",
     "react-hot-loader": "^3.0.0-beta.5",
     "style-loader": "^0.13.1",
+    "svg-loader": "0.0.2",
     "webpack": "^1.13.2",
     "webpack-dev-server": "^1.16.1"
   },
