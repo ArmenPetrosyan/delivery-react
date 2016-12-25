@@ -50,14 +50,13 @@ export default class App extends Component {
         <Modal.Body>
           <p>Выберите город на карте</p>
           <Gmaps
-            key="AIzaSyCAkrHDF1qzFbANyiUEFX4HNhmmVnslOSA"
             width={'100%'}
             height={'400px'}
             lat={this.props.storeCoords.lat}
             lng={this.props.storeCoords.lng}
             zoom={7}
             loadingMessage={'Be happy'}
-            params={{v: '3.exp'}}
+            params={{v: '3.exp',key:'AIzaSyCAkrHDF1qzFbANyiUEFX4HNhmmVnslOSA'}}
             onMapCreated={this.onMapCreated}
             onClick={this.createMarker}
           >

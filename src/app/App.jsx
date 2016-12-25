@@ -298,7 +298,6 @@ export default class App extends Component {
       <div className="padding-top-80">
         { about }
         <Gmaps
-          key="AIzaSyCAkrHDF1qzFbANyiUEFX4HNhmmVnslOSA"
           width={'100%'}
           height={'600px'}
           lat={this.coords.lat}
@@ -307,7 +306,7 @@ export default class App extends Component {
           zoom={7}
           maxZoom={7}
           loadingMessage={'Be happy'}
-          params={{v: '3.exp'}}
+          params={{v: '3.exp',key:'AIzaSyCAkrHDF1qzFbANyiUEFX4HNhmmVnslOSA'}}
           onMapCreated={this.onMapCreated}
           onClick={this.createMarker }
         >
