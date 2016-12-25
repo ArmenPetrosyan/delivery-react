@@ -12,7 +12,8 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
   ],
   devServer: {
-      port: '8088'
+      host: '0.0.0.0',
+      port: '80'
   },
   resolve: {
     root: [
