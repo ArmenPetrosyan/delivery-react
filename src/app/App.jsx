@@ -99,7 +99,7 @@ export default class App extends Component {
 
   render () {
     const about = (
-      <p className="dashes f1 text-center padding-top-40 padding-bottom-40 padding-both-160">
+      <p className="dashes f1 text-center padding-top-40 padding-bottom-40">
         На карте отображены заявки на доставку товаров с указанием пунктов назначения, ценой и весом груза.
         Для получения дополнительной информации щелкните на значек автомобиля.
       </p>
@@ -221,9 +221,10 @@ export default class App extends Component {
     );
 
     const tooltips = {
-      t1: (<Tooltip id="tooltip">Грузоподъемность (Тонны)</Tooltip>),
+      t1: (<Tooltip id="tooltip">Грузоподъемность (тонны)</Tooltip>),
       t2: (<Tooltip id="tooltip">Средняя скорость (км/ч)</Tooltip>),
-      t3: (<Tooltip id="tooltip">Средняя скорость (км/ч)</Tooltip>),
+      t3: (<Tooltip id="tooltip">Время загрузки+разгрузки (ч)</Tooltip>),
+      t4: (<Tooltip id="tooltip">Стоимость перевозки груза (грн/ч)</Tooltip>),
     };
 
     const autoDashboard = (
@@ -246,8 +247,20 @@ export default class App extends Component {
                 </span>
               </OverlayTrigger>
             </th>
-            <th>t <sup>ч</sup></th>
-            <th>$ <sup>грн/км</sup></th>
+            <th>
+              <OverlayTrigger placement="top" overlay={tooltips.t3}>
+                <span>
+                  t <sup>ч</sup>
+                </span>
+              </OverlayTrigger>
+            </th>
+            <th>
+              <OverlayTrigger placement="top" overlay={tooltips.t4}>
+                <span>
+                  $ <sup>грн/км</sup>
+                </span>
+              </OverlayTrigger>
+            </th>
           </tr>
           </thead>
           <tbody>
