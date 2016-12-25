@@ -50,6 +50,7 @@ export default class App extends Component {
         <Modal.Body>
           <p>Выберите город на карте</p>
           <Gmaps
+            key="AIzaSyCAkrHDF1qzFbANyiUEFX4HNhmmVnslOSA"
             width={'100%'}
             height={'400px'}
             lat={this.props.storeCoords.lat}

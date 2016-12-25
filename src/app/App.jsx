@@ -298,6 +298,7 @@ export default class App extends Component {
       <div className="padding-top-80">
         { about }
         <Gmaps
+          key="AIzaSyCAkrHDF1qzFbANyiUEFX4HNhmmVnslOSA"
           width={'100%'}
           height={'600px'}
           lat={this.coords.lat}
