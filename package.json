@@ -38,6 +38,7 @@
     "webpack-dev-server": "^1.16.1"
   },
   "scripts": {
-    "start": "webpack-dev-server --content-base public/ --hot"
+    "start": "webpack-dev-server --content-base public/ --hot",
+    "build": "webpack"
   }
 }
