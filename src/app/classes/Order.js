@@ -70,7 +70,7 @@ class OrderList {
     return this.distances;
   };
 
-  getSewingDistances = () => {
+  getSewingDistance = (fromIndex, toIndex) => {
     let {storeMatrix, destinationMatrix} = this.distances;
     return storeMatrix[fromIndex] + storeMatrix[toIndex] - destinationMatrix[fromIndex, toIndex]
   };

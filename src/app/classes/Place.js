@@ -9,6 +9,7 @@ export default class Place {
     this.geocoder.geocode({
       location: this.latLng
     }, (result, status) => {
+      console.log(status)
       if(status === google.maps.GeocoderStatus.OK) {
         this.defineGeoName(result);
       }
