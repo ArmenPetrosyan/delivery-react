@@ -1,4 +1,11 @@
 import React, {Component} from 'react';
+import MapInPopup from 'MapInPopup.jsx';
+import About from 'About.jsx';
+import OrdersForm from 'OrdersForm.jsx';
+import PopupContainer from 'PopupContainer.jsx';
+import {Order, OrderList} from 'classes/Order';
+import Car from 'classes/Car';
+
 import {
   Well,
   Col,
@@ -14,41 +21,65 @@ import {
   Tooltip,
   ButtonGroup
 } from 'react-bootstrap';
+
+import {
+  Gmaps,
+  Marker,
+  InfoWindow,
+  Circle
+} from 'react-gmaps';
+
 import 'App.less';
-import {Gmaps, Marker, InfoWindow, Circle} from 'react-gmaps';
-import MapInPopup from 'MapInPopup.jsx';
-import About from 'About.jsx';
 
 // Google maps API Key - AIzaSyCAkrHDF1qzFbANyiUEFX4HNhmmVnslOSA
 
 export default class App extends Component {
   constructor(props) {
     super(props);
+
+    // начальный список заявок
+    this.orders = [
+      new Order(new google.maps.LatLng(this.storeCoords.lat,this.storeCoords.lng), new google.maps.LatLng(46.961410, 32.009178), 1200),
+      new Order(new google.maps.LatLng(this.storeCoords.lat,this.storeCoords.lng), new google.maps.LatLng(47.894131, 33.410428), 1200),
+      new Order(new google.maps.LatLng(this.storeCoords.lat,this.storeCoords.lng), new google.maps.LatLng(49.535360, 34.578847), 1000),
+      new Order(new google.maps.LatLng(this.storeCoords.lat,this.storeCoords.lng), new google.maps.LatLng(50.383188, 50.383188), 1200),
+      new Order(new google.maps.LatLng(this.storeCoords.lat,this.storeCoords.lng), new google.maps.LatLng(48.758408, 30.177106), 800),
+      new Order(new google.maps.LatLng(this.storeCoords.lat,this.storeCoords.lng), new google.maps.LatLng(46.585176, 32.686837), 5500)
+    ];
+
+    // транспорт
+    this.cars = [
+      new Car('MAN', 10, 95, 1, 10),
+      new Car('MAZ', 15, 70, 1.5, 10),
+      new Car('Kamaz', 21, 60, 2, 10),
+      new Car('Renault', 25, 70, 2.1, 15)
+    ];
   }
 
-  coords = {
+  storeCoords = {
     lat: 46.953584,
     lng: 32.065843
   };
 
   onStoreDragEnd = (event) => {
-    this.coords = {
+    this.storeCoords = {
       lat: event.latLng.lat(),
       lng: event.latLng.lng()
     }
   };
 
   state = {
-    lgShow            : false,
-    aboutShow         : false,
-    showOrderAddForm  : false,
-    orders            : [],
-    markers           : [
+    lgShow                : false,
+    aboutShow             : false,
+    ordersFormPopupShow   : false,
+    showOrderAddForm      : false,
+    orders                : [],
+    markers               : [
       <Marker
-        lat={this.coords.lat}
-        lng={this.coords.lng}
+        lat={this.storeCoords.lat}
+        lng={this.storeCoords.lng}
         draggable={true}
-        title={'Основной Склад'}
+        label={'Основной Склад'}
         onDragEnd={this.onStoreDragEnd}
         icon = 'svg/transport-1.svg'
       />
@@ -97,7 +128,27 @@ export default class App extends Component {
     });
   };
 
+  onShowOrdersForm = () => {
+    this.setState({
+      ordersFormPopupShow : true
+    });
+  };
+
+  onHideOrdersForm = () => {
+    this.setState({
+      ordersFormPopupShow : false
+    });
+  };
+
   render () {
+
+    /////////////////
+    window.Order = Order;
+    window.OrderList = new OrderList(this.orders);
+    // window.OrderList = OrderList;
+    window.orders = this.orders;
+    /////////////////
+
     const about = (
       <p className="dashes f1 text-center padding-top-40 padding-bottom-40">
         На карте отображены заявки на доставку товаров с указанием пунктов назначения, ценой и весом груза.
@@ -105,13 +156,25 @@ export default class App extends Component {
       </p>
     );
 
+    const ordersForm = (<OrdersForm onShowModal={this.onShowModal} />);
+    const ordersFormPopup = (
+      <PopupContainer
+        title="Добавить заказ"
+        show={this.state.ordersFormPopupShow}
+        onHide={this.onHideOrdersForm}
+      >
+        { ordersForm }
+      </PopupContainer>
+    );
+
     const emptyList = (
       <Row>
         <Col sm="12">
           <div className="dark-theme text-center">
             <img src="svg/ghost-2.svg" alt=""/>
-            <p className="ghost-p bold spacer-top-20">Список заказов пуст</p>
-            <Button bsStyle="success">Создать заказ</Button>
+            <p className="ghost-p spacer-top-20">Список заказов пуст</p>
+            {ordersFormPopup}
+            <Button bsStyle="success" onClick={this.onShowOrdersForm}>Создать заказ</Button>
           </div>
         </Col>
       </Row>
@@ -132,89 +195,46 @@ export default class App extends Component {
             </tr>
           </thead>
           <tbody>
-          { this.state.orders.map((current) => {
-
-          })}
+            { this.orders.map((order, index) => {
+              return (
+                <tr>
+                  <td>
+                    {index}
+                  </td>
+                  <td>
+                    {order.initialTime.toDateString()}
+                  </td>
+                  <td>
+                    {order.from.title}
+                  </td>
+                  <td>
+                    {order.to.title}
+                  </td>
+                  <td>
+                    {order.time}
+                  </td>
+                  <td>
+                    {order.amount}
+                  </td>
+                  <td>
+                    {order.fine}
+                  </td>
+                  <td>
+                    <Button bsStyle="link">
+                      Удалить
+                    </Button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </Table>
       </Well>
     );
 
-    const ordersForm = (
-      <Well>
-        <Form horizontal>
-          <FormGroup controlId="formFrom">
-            <Col sm={2}>
-              <ControlLabel>
-                Откуда
-              </ControlLabel>
-              <br/>
-              <br/>
-              <a onClick={this.onShowModal}>
-                Указать
-              </a>
-            </Col>
-            <Col sm={2}>
-              <ControlLabel>
-                Куда
-              </ControlLabel>
-              <br/>
-              <br/>
-              <a onClick={this.onShowModal}>
-                Указать
-              </a>
-            </Col>
-            <Col sm={2}>
-              <ControlLabel>
-                Объем <sup>кг</sup>
-              </ControlLabel>
-              <br/>
-              <br/>
-              <FormControl
-                type="number"
-                onChange={this.handleChange}
-              />
-            </Col>
-            <Col sm={3}>
-              <ControlLabel>
-                Стоимость <sup>грн</sup>
-              </ControlLabel>
-              <br/>
-              <br/>
-              <FormControl
-                type="number"
-                onChange={this.handleChange}
-              />
-            </Col>
-            <Col sm={3}>
-              <ControlLabel>
-                Штраф <sup>грн/час</sup>
-              </ControlLabel>
-              <br/>
-              <br/>
-              <FormControl
-                type="number"
-                onChange={this.handleChange}
-              />
-            </Col>
-            <Col sm="12">
-              <ButtonGroup>
-                <Button bsStyle="success" className="spacer-top-20">
-                  Добавить заказ
-                </Button>
-                <Button type="reset" bsStyle="default" className="spacer-top-20">
-                  Очистить
-                </Button>
-              </ButtonGroup>
-            </Col>
-          </FormGroup>
-        </Form>
-      </Well>
-    );
-
     const modal = (
       <MapInPopup
-        storeCoords = {this.coords}
+        storeCoords = {this.storeCoords}
         show={this.state.lgShow}
         onHide={this.onHideModal}
       />
@@ -227,72 +247,79 @@ export default class App extends Component {
       t4: (<Tooltip id="tooltip">Стоимость перевозки груза (грн/ч)</Tooltip>),
     };
 
+    let autoRows = this.cars.map((car, index) => {
+      return (
+        <tr>
+          <th>{index + 1}</th>
+          <td>{car.name}</td>
+          <td>{car.carrying}</td>
+          <td>{car.speed}</td>
+          <td>{car.loadingTime}</td>
+          <td>{car.costs}</td>
+        </tr>
+      );
+    });
+
     const autoDashboard = (
-      <Well>
-        <Table>
-          <thead>
-          <tr>
-            <th>#</th>
-            <th>
-              <OverlayTrigger placement="top" overlay={tooltips.t1}>
+      <div>
+        <h4 className="color-dark semibold">Автопарк</h4>
+        <Well>
+          <Table>
+            <thead>
+            <tr>
+              <th>#</th>
+              <th>
+                Модель
+              </th>
+              <th>
+                <OverlayTrigger placement="top" overlay={tooltips.t1}>
                 <span>
                   Г/П <sup>т</sup>
                 </span>
-              </OverlayTrigger>
-            </th>
-            <th>
-              <OverlayTrigger placement="top" overlay={tooltips.t2}>
+                </OverlayTrigger>
+              </th>
+              <th>
+                <OverlayTrigger placement="top" overlay={tooltips.t2}>
                 <span>
                   V <sup>км/ч</sup>
                 </span>
-              </OverlayTrigger>
-            </th>
-            <th>
-              <OverlayTrigger placement="top" overlay={tooltips.t3}>
+                </OverlayTrigger>
+              </th>
+              <th>
+                <OverlayTrigger placement="top" overlay={tooltips.t3}>
                 <span>
                   t <sup>ч</sup>
                 </span>
-              </OverlayTrigger>
-            </th>
-            <th>
-              <OverlayTrigger placement="top" overlay={tooltips.t4}>
+                </OverlayTrigger>
+              </th>
+              <th>
+                <OverlayTrigger placement="top" overlay={tooltips.t4}>
                 <span>
                   $ <sup>грн/км</sup>
                 </span>
-              </OverlayTrigger>
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-            <th>1</th>
-            <td>0.5</td>
-            <td>75</td>
-            <td>1</td>
-            <td>10</td>
-          </tr>
-          <tr>
-            <th>2</th>
-            <td>1.5</td>
-            <td>60</td>
-            <td>1.2</td>
-            <td>12</td>
-          </tr>
-          </tbody>
-        </Table>
-        <Button bsStyle="success" className="add-auto">
-          Добавить авто
-        </Button>
-      </Well>
+                </OverlayTrigger>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+              {autoRows}
+            </tbody>
+          </Table>
+          <Button bsStyle="success" className="add-auto">
+            Добавить авто
+          </Button>
+        </Well>
+      </div>
+
     );
 
     const ordersList = (
       <div className="padding-top-40">
         <Row>
-          <Col sm="8">
+          <Col sm="6">
             { ordersForm }
           </Col>
-          <Col sm="4">
+          <Col sm="6">
             { autoDashboard }
           </Col>
           <Col sm="12">
@@ -300,9 +327,11 @@ export default class App extends Component {
               Список заказов
             </h3>
           </Col>
-          { modal }
-          { !this.state.orders.length && emptyList }
-          { !!this.state.orders.length && activeOrders}
+          <Col sm="12">
+            { modal }
+            { !this.orders.length && emptyList }
+            { !!this.orders.length && activeOrders }
+          </Col>
         </Row>
       </div>
     );
@@ -313,8 +342,8 @@ export default class App extends Component {
         <Gmaps
           width={'100%'}
           height={'600px'}
-          lat={this.coords.lat}
-          lng={this.coords.lng}
+          lat={this.storeCoords.lat}
+          lng={this.storeCoords.lng}
           minZoom={7}
           zoom={7}
           maxZoom={7}
@@ -324,11 +353,6 @@ export default class App extends Component {
           onClick={this.createMarker }
         >
           { this.state.markers }
-          <InfoWindow
-            lat={46.957439141148775}
-            lng={32.06686019897461}
-            content={'Основной Склад'}
-            onCloseClick={this.onCloseClick} />
         </Gmaps>
       </div>
 

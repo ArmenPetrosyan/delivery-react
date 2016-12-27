@@ -112,7 +112,13 @@
 }
 
 .service-header {
-  background: linear-gradient(to bottom, #533872, #3a2778),#58488a;
+
+  background: #1A2980; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #1A2980 , #26D0CE); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #1A2980 , #26D0CE); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+  //background: linear-gradient(to bottom, #533872, #3a2778),#58488a;
 }
 
 /** Theme **/
@@ -125,7 +131,7 @@
   p {
     color: #fff;
     font-weight: 100;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.05em;
   }
 }
 
@@ -134,11 +140,27 @@
 }
 
 .bold {
-  font-weight: bold;
+  font-weight: bold !important;
+}
+
+.semibold {
+  //font-weight:500 !important;
 }
 
 .ghost-p {
-  color: #9890a2 !important;
+  color: #31c4e8 !important;
+}
+
+.color-dark {
+  color: #0d2348 !important
+}
+
+.color-error {
+  color: #c72d20;
+}
+
+.btn-remove {
+  text-decoration: dashed;
 }
 
 .strange-btn {
@@ -156,7 +178,7 @@
     content:'';
     width: 100%;
     position: absolute;
-    border: 1px dashed #2b1d1d;
+    border: 1px dashed #4073a7;
     left: 0;
     top: -10px;
   }
