@@ -73,7 +73,7 @@ const OrdersForm = (props) => {
                  onChange={props.handleChange}
                />
              </Col>
-             <Col sm="12">
+             <Col sm={12}>
                <ButtonGroup>
                  <Button bsStyle="success" className="spacer-top-20">
                    Добавить заказ

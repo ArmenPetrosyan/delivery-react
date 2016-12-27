@@ -37,14 +37,15 @@ export default class App extends Component {
   constructor(props) {
     super(props);
 
+    let storeLatLng = new google.maps.LatLng(this.storeCoords.lat,this.storeCoords.lng);
     // начальный список заявок
     this.orders = [
-      new Order(new google.maps.LatLng(this.storeCoords.lat,this.storeCoords.lng), new google.maps.LatLng(46.961410, 32.009178), 1200),
-      new Order(new google.maps.LatLng(this.storeCoords.lat,this.storeCoords.lng), new google.maps.LatLng(47.894131, 33.410428), 1200),
-      new Order(new google.maps.LatLng(this.storeCoords.lat,this.storeCoords.lng), new google.maps.LatLng(49.535360, 34.578847), 1000),
-      new Order(new google.maps.LatLng(this.storeCoords.lat,this.storeCoords.lng), new google.maps.LatLng(50.383188, 50.383188), 1200),
-      new Order(new google.maps.LatLng(this.storeCoords.lat,this.storeCoords.lng), new google.maps.LatLng(48.758408, 30.177106), 800),
-      new Order(new google.maps.LatLng(this.storeCoords.lat,this.storeCoords.lng), new google.maps.LatLng(46.585176, 32.686837), 5500)
+      new Order(storeLatLng, new google.maps.LatLng(46.961410, 32.009178), 12, 6, 5000),
+      new Order(storeLatLng, new google.maps.LatLng(47.894131, 33.410428), 3, 2, 1000),
+      new Order(storeLatLng, new google.maps.LatLng(49.535360, 34.578847), 5, 3, 1300),
+      new Order(storeLatLng, new google.maps.LatLng(50.383188, 50.383188), 7, 10, 3000),
+      new Order(storeLatLng, new google.maps.LatLng(48.758408, 30.177106), 8, 9, 4000),
+      new Order(storeLatLng, new google.maps.LatLng(46.585176, 32.686837), 10, 8, 3500)
     ];
 
     // транспорт
@@ -169,7 +170,7 @@ export default class App extends Component {
 
     const emptyList = (
       <Row>
-        <Col sm="12">
+        <Col sm={12}>
           <div className="dark-theme text-center">
             <img src="svg/ghost-2.svg" alt=""/>
             <p className="ghost-p spacer-top-20">Список заказов пуст</p>
@@ -190,7 +191,8 @@ export default class App extends Component {
               <th>Откуда</th>
               <th>Куда</th>
               <th>Срок доставки</th>
-              <th>Плата</th>
+              <th>Объем груза</th>
+              <th>Стоимость доставки</th>
               <th>Штраф (грн/час)</th>
             </tr>
           </thead>
@@ -212,6 +214,9 @@ export default class App extends Component {
                   </td>
                   <td>
                     {order.time}
+                  </td>
+                  <td>
+                    {order.volume}
                   </td>
                   <td>
                     {order.amount}
@@ -316,18 +321,18 @@ export default class App extends Component {
     const ordersList = (
       <div className="padding-top-40">
         <Row>
-          <Col sm="6">
+          <Col sm={6}>
             { ordersForm }
           </Col>
-          <Col sm="6">
+          <Col sm={6}>
             { autoDashboard }
           </Col>
-          <Col sm="12">
+          <Col sm={12}>
             <h3 className="padding-bottom-40">
               Список заказов
             </h3>
           </Col>
-          <Col sm="12">
+          <Col sm={12}>
             { modal }
             { !this.orders.length && emptyList }
             { !!this.orders.length && activeOrders }
@@ -362,13 +367,13 @@ export default class App extends Component {
         <header className="padding-top-20 padding-bottom-20">
           <Grid>
             <Row>
-              <Col sm="10">
+              <Col sm={10}>
                 <h1 className="heading__type-h1">
                   Delivery Service
                 </h1>
               </Col>
-              <Col sm="2" className="aligned-right">
-                <Button className="strange-btn" onClick={this.onShowAbout}>
+              <Col sm={2} className="aligned-right">
+                <Button bsStyle="link" className="strange-btn" onClick={this.onShowAbout}>
                   Об авторах
                 </Button>
                 <About

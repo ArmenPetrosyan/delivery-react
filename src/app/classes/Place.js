@@ -9,8 +9,9 @@ export default class Place {
     this.geocoder.geocode({
       location: this.latLng
     }, (result, status) => {
+      console.log(status)
       if(status === google.maps.GeocoderStatus.OK) {
-        this.getGeoName(result);
+        this.defineGeoName(result);
       }
     });
   };
@@ -24,11 +25,12 @@ export default class Place {
   }
 
   get title() {
-    return this._city || this._region;
+    return (this._city || this._region);
   }
 
-  getGeoName = (geocoderResult) => {
+  defineGeoName = (geocoderResult) => {
     geocoderResult.forEach((object) => {
+      // console.log(object);
       if (object.types.indexOf('locality') >= 0) {
 
         // если координаты находятся в черте города, сохраняем название города
@@ -41,5 +43,6 @@ export default class Place {
 
       }
     });
+    // console.log("------------------------------------------");
   }
 }

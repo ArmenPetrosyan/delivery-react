@@ -10,10 +10,11 @@ const About = (props) => {
       <Modal.Body>
         <h4>Петросян Армен</h4>
         <h4>Ясенко Наталья</h4>
-        <p>Группа 501m - 2016г</p>
+        <h4>Нагорный Владимир</h4>
+        <p>Группа 501м - 2016г</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>Я рад</Button>
+        <Button onClick={props.onHide}>Ок да</Button>
       </Modal.Footer>
     </Modal>
   );
