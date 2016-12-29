@@ -40,8 +40,13 @@ class OrderList {
 
   addToList = (order) => {
     this.orderList.push(order);
+
   };
 
+  /**
+   * Матрица расстояний
+   * @returns {null}
+   */
   calcualteDistances = () => {
     let matrix = [];
     let storeMatrix = [];
@@ -70,11 +75,23 @@ class OrderList {
     return this.distances;
   };
 
+  /**
+   *  Расчетевинг число
+   * @param fromIndex
+   * @param toIndex
+   * @returns {number}
+   */
   getSewingDistance = (fromIndex, toIndex) => {
     let {storeMatrix, destinationMatrix} = this.distances;
     return storeMatrix[fromIndex] + storeMatrix[toIndex] - destinationMatrix[fromIndex, toIndex]
   };
 
+  /**
+   * Расстояние между двумя точками на карте
+   *
+   * @param place1 {Place}
+   * @param place2 {Place}
+   */
   static computeDistanceBetween = (place1, place2) => {
     return google.maps.geometry.spherical.computeDistanceBetween(place1.latLng, place2.latLng);
   };
